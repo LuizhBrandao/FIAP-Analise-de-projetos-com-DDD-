@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using TractorRental.Application.Interfaces;
 using TractorRental.Domain.Events;
+using TractorRental.Domain.Aggregates;
 
 namespace TractorRental.Application.Policies;
 

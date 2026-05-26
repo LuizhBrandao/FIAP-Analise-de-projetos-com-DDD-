@@ -17,6 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\TractorRental.Application\TractorRental.Application.csproj" />
+    <ProjectReference Include="..\..\src\TractorRental.Domain\TractorRental.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
