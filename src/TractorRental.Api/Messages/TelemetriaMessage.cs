@@ -1,4 +1,4 @@
-﻿namespace TractorRental.Messages; // <-- A mesma etiqueta mágica que colocamos no Worker
+﻿namespace TractorRental.Messages;
 
 public record TelemetriaMessage(
     Guid TratorId,

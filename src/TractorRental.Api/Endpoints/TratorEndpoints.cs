@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using TractorRental.Application.Commands;
+using TractorRental.Application.Interfaces;
 using TractorRental.Domain.Aggregates;
 using TractorRental.Infrastructure.Data;
 
@@ -29,6 +30,14 @@ public static class TratorEndpoints
             return trator is not null ? Results.Ok(trator) : Results.NotFound();
         })
         .WithSummary("Consulta o status atual e as últimas métricas do trator");
+
+        // Endpoint Otimizado com CQRS e Dapper para o Portal Web
+        group.MapGet("/dashboard", async (ITratorQueries queries) =>
+        {
+            var tratores = await queries.ObterDashboardTratoresAsync();
+            return Results.Ok(tratores);
+        })
+        .WithSummary("Lista todos os tratores e métricas em alta performance (Dapper)");
 
         // 3. Endpoint Principal: Recebendo a Telemetria IoT (Isolado com CQRS)
         group.MapPost("/telemetria", async (TelemetriaRequest request, IMediator mediator) =>

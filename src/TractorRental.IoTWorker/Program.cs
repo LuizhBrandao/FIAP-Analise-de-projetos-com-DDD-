@@ -9,10 +9,10 @@ var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(RegistrarTelemetriaCommand).Assembly));
 
-// 2. Configura o MassTransit para usar o RabbitMQ
+// Configura o MassTransit para o Worker
 builder.Services.AddMassTransit(x =>
 {
-    // Registra o nosso ouvinte
+    // 1. Registra o seu consumidor de telemetria
     x.AddConsumer<TelemetriaConsumer>();
 
     x.UsingRabbitMq((context, cfg) =>
@@ -22,10 +22,8 @@ builder.Services.AddMassTransit(x =>
             h.Password("guest");
         });
 
-        // 🌟 A MÁGICA ENTRA AQUI: Ensina o MassTransit a ler JSON puro, sem envelope
-        cfg.UseRawJsonSerializer();
-
-        // Configura a fila "telemetria-tratores" e amarra ao nosso Consumer
+        // 2. AQUI ESTÁ O SEGREDO: Você precisa configurar o endpoint 
+        // para a fila que a API está usando para PUBLISH
         cfg.ReceiveEndpoint("telemetria-tratores", e =>
         {
             e.ConfigureConsumer<TelemetriaConsumer>(context);
